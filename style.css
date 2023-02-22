@@ -1,0 +1,245 @@
+body{
+    font-family:"Albert Sans";
+    background-color:rgb(228, 222, 213);
+    margin:0px;
+}
+main{ 
+    margin:0px;
+    display:flex;
+    flex-direction:row;
+    padding-top:12vh;
+}
+nav{ 
+    top:0px;    
+    background-color:white; 
+    height: 12vh; 
+    width:100%; 
+
+    display:flex; 
+    align-items:center; 
+    flex-direction: row;
+    justify-content: space-between;
+    position:fixed;
+}
+nav h1{ 
+    margin-left:20px; 
+}
+
+#login{ 
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between; 
+     
+    width:10%;
+    margin-right: 10px; 
+ 
+}
+
+.feed{ 
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:15px; 
+    width: 70vw;
+}
+
+/* STORIES */
+.feed .stories{
+    display:flex;
+    background-color:white;
+    width: 65%;
+    height:15%;
+    margin-bottom:30px;
+
+    justify-content:left;
+    align-items:center;
+}
+.story{ 
+    display:flex; 
+    flex-direction:column; 
+    justify-content:center;
+    align-items:center;
+
+    height:60px;
+    width:60px;
+    margin:10px;
+    padding-top:5px;
+    font-size: 7pt;
+}
+
+.story img{
+    height:30px; 
+    width:30px;
+    border-radius:50%;
+    border:solid 4px rgb(210, 210, 210);
+}
+
+/* POSTS */
+
+#posts{
+    display:flex;
+    justify-content: center;
+    flex-direction:column;
+
+    width:65%;
+}
+
+#posts .post{ 
+    display:flex; 
+    flex-direction:column;
+    column-gap:0px;
+    background-color:white; 
+    margin-bottom:20px;
+}
+
+#posts .post img{ 
+    width:100%;
+    height:450px;
+    
+}
+
+#posts .header { 
+    align-items:center;
+    display:flex; 
+    justify-content:space-between;
+    font-size:14px;
+    margin-left: 10px; 
+    margin-right:10px;
+}
+
+#posts i{ 
+    margin-right:5px;
+}
+
+.intbar .liked{ 
+    -webkit-text-fill-color: red;
+    text-overflow: clip;
+}
+
+.intbar .marked{ 
+    -webkit-text-fill-color:purple;
+}
+
+#posts .post .intbar {
+    display:flex; 
+    flex-direction:row;
+    justify-content:space-between;
+
+    padding:10px;
+}
+
+#posts .description{ 
+    display:flex; 
+    flex-direction:column;
+
+    justify-content:space-between;
+    height:auto;
+    padding:10px;
+}
+
+#posts .description p{ 
+    padding-top: 10px;
+    margin:0px;
+}
+
+#timestamp{
+    font-size:10pt;
+    color:gray;
+}
+
+#posts .comment{
+    margin-top:0px; 
+    padding-left:10px;
+    padding-top:none;
+}
+
+.comment button{ 
+    background:none; 
+    border:none;
+    color:rgb(35, 35, 216); 
+}
+
+.mycomment{ 
+background-color:white;
+
+display:flex; 
+flex-direction:row;
+justify-content:space-around;
+align-items:center;
+
+border-top:1px solid lightgray
+}
+
+.mycomment p{ 
+    width:80%
+}
+.mycomment a{ 
+    color:blue;
+}
+
+
+/* RECCOMENDATIONS */
+.reccomendations{
+    position:fixed;
+    right:10vw;
+    display:flex; 
+    flex-direction:column;
+    padding-top:15px;
+    height:50vh;
+    width:30vw;
+}
+
+.user{
+    display:flex; 
+    flex-direction:row;
+    align-items:center;
+}
+
+.user img{ 
+    height:50px;
+    width:50px;
+    margin-left:0;
+    border-radius:50%;
+    
+}
+.user h2{ 
+    font-size:18pt;
+    padding-left:30px;
+}
+
+.suggestion{ 
+    display:flex; 
+    flex-direction:row;
+    
+    align-items:center;
+    height:50px;
+}
+
+.suggestion .text{ 
+    width:60%;
+}
+.text strong{ 
+    font-size:small;
+}
+.text p{
+    color:gray;
+    font-size:smaller;
+    margin:0px;
+}
+
+.suggestion a{
+    font-size:smaller; 
+    color:blue;
+
+}
+
+.suggestion img{ 
+    margin-right:10px;
+    border-radius:50%;
+}
+
+.suggestions h2{ 
+    font-size:12pt;
+    color:gray;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- stylesheets and metadata go here -->
+    <title>Photo App</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.js" defer></script>
+    <script src="js/main.js" type="module" defer></script>
+
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Albert Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/rle7hde.css">
+</head>
+
+<body>
+<nav id="profile"> 
+        <h1>Photo App</h1>
+
+        <section id="login">
+            <p>gibsonjack</p>
+            <a>Sign out</a>
+        </section>
+</nav>
+<main>
+
+<div class = "feed">
+    <div class ="stories">
+
+        <!-- 1 module left for reference -->
+        <div class = "story">
+            <img src="https://picsum.photos/45/45" id="jen">
+            <p>gouldjennifer</p>
+        </div>
+    </div>
+
+<div id="posts">
+
+    <!-- 1 module left for reference -->
+    <div class="post">
+        <section class="header">
+        <h1>username</h1>
+        <i class="fa-solid fa-ellipsis"></i> 
+        </section>
+
+        <img src="https://picsum.photos/300">
+
+    <section class = intbar>
+        <div class="icons">
+            <i class="fa-regular fa-heart"></i>
+            <i class="fa-regular fa-comment"></i>
+            <i class="fa-regular fa-paper-plane"></i> 
+        </div>           
+            <i class="fa-regular fa-bookmark"></i>
+    </section>
+
+    <section class="description">
+        <strong>30 likes</strong>
+        <p><strong>gibsonjack</strong>
+            here is a caption about the photo...something something something more more more something somethin...<a>more</a></p>
+    </section>
+
+    <section class="comment">
+        <p><strong>lizzie</strong> wow! I love this!</p>
+        <p><strong>vanek97</strong> omg! this is so awesome!!!</p>
+        <p id="timestamp">1 DAY AGO</p>
+    </section>
+
+    <section class="mycomment">
+        <i class="fa-regular fa-face-smile"></i>
+        <p>add comment...</p>
+        <a>Post</a>
+    </section>
+    </div>
+</div>
+
+</div>
+<div  class="reccomendations">
+    <div class = "user">
+        <img src="https://picsum.photos/60/60">
+        <h2>gibsonjack</h2>
+    </div>
+
+<div class ="suggestions">
+    <h2>Suggestions for you</h2> 
+
+<!-- <div class="suggestion" >
+
+    <img src="https://picsum.photos/30/30">
+
+    <section class="text">
+    <strong>amandahudson</strong>
+    <p>suggested for you</p>
+    </section>
+
+    <a>follow</a>
+</div> -->
+
+</div>
+</div>
+
+<div id = modal>
+
+</div>
+
+<div class = "testing">
+</div>
+
+</main>

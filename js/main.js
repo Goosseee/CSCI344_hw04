@@ -1,5 +1,6 @@
 import {getAccessToken} from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
+let posts;
 
 const showStories = async (token) => {
     const endpoint = `${rootURL}/api/stories`;
@@ -68,13 +69,117 @@ const showPosts = async (token) => {
 
     const postHtml = data.map(postsToHtml).join('');
     document.querySelector("#posts").innerHTML = postHtml;
-    checkIcons(data);
+
+    // const modalHtml = commentsInModal(data);
+    // document.querySelector(".modal").innerHTML = modalHtml;
+
+    posts = data;
 }
 
-const postsToHtml = post =>{
+const modalElement = document.querySelector('.modal-bg');
+
+//For all event handlers attached to dynamic html, you'll need to do this 
+//instead of const, use window.(function)
+window.showModal = (index) => {
+    const post = posts[index];
+    console.log(post);
+    openModal(post);
+}
+
+const openModal = post => {
+
+    // shows the modal:
+    modalElement.classList.remove('hidden');
+
+    // accessibility:
+    modalElement.setAttribute('aria-hidden', 'false');
+
+    // puts the focus on the "close" button:
+    document.querySelector('.close').focus();
+
+
+    document.querySelector(".reccomendations").style.display = "none";
+    document.querySelector("body").style.overflow ="hidden";
+
+    const modalHtml = commentsInModal(post);
+    document.querySelector(".modal").innerHTML= modalHtml;
+
+    
+}
+
+const commentsInModal = post =>{
+   const hasComments = post.comments.length > 0;
+   const commentList= post.comments;
+    const commentListHtml = commentList.map(listOfComments).join('');
+
+
+    if (hasComments){
+        return ` 
+        <img src ="${post.image_url}" alt="Image post by:${post.user.username}"/>
+            <div class ="modal-body">
+                <section class="modal-header" tabindex="0">
+                    <img src="${post.user.thumb_url} alt="${post.user.username}'s profile picture"/>
+                    <h1> ${post.user.username}</h1>
+                </section>
+
+                <section class="post-caption" tabindex="0">
+                    <p ><strong>${post.user.username} </strong>${post.caption}</p>
+                </section>
+            ${commentListHtml}
+             </div>`
+    }else {
+        return ''
+    }
+}
+
+const listOfComments = comments =>{ 
+    return  `
+    <section class="comment" tabindex="0">
+    <p ><strong>${comments.user.username} </strong>${comments.text}</p>
+    <p class="display_time" >${comments.display_time}</p>
+    </section>
+`
+}
+
+window.shutModal = () =>{
+    closeModal();
+}
+const closeModal = () => {
+    // hides the modal:
+    modalElement.classList.add('hidden');
+
+    // accessibility:
+    modalElement.setAttribute('aria-hidden', 'false');
+
+    // puts the focus on the "open" button:
+    document.querySelector('.open').focus();
+
+
+    document.querySelector(".reccomendations").style.display = "flex";
+    document.querySelector("body").style.overflow ="scroll";
+};
+
+const showCommentAndButton = (post, index) =>{
+    const hasComments = post.comments.length>0;
+    const lastComment = post.comments.length -1;
+
+ if (hasComments){
+    return`
+    <section class="comment">
+        <button onclick="showModal(${index})" class="open">View all ${post.comments.length} comments</button>
+        <p tabindex="0"><strong>username </strong>${post.comments[lastComment].text}</p>
+    </section>
+    `
+}else{
+    return''
+}
+}
+
+const postsToHtml = (post, index) =>{
+
     return`  
-    <div class="post">
-        <section class="header">
+    <div class="post" id="${post.id}">
+        <section class="header" tabindex="0">
         <h1>${post.user.username}</h1>
         <i class="fa-solid fa-ellipsis"></i> 
         </section>
@@ -83,45 +188,65 @@ const postsToHtml = post =>{
 
     <section class = intbar>
         <div class="icons">
-            <i class="fa-regular fa-heart" id="heart"></i>
+            ${likeStatus(post)}
             <i class="fa-regular fa-comment"></i>
             <i class="fa-regular fa-paper-plane"></i> 
         </div>           
-            <i class="fa-regular fa-bookmark" id="bookmark"></i>
+            ${bookmarkStatus(post)}
     </section>
 
-    <section class="description">
+    <section class="description" tabindex="0">
         <strong>${post.likes.length} likes</strong>
         <p><strong>${post.user.username}</strong>
-            here is a caption about the photo...something something something more more more something somethin...<a>more</a></p>
+           ${post.caption}</p>
             <p id="timestamp">${post.display_time}</p>
     </section>
+       ${showCommentAndButton(post, index)}
 
-    <section class="comment">
-        <button>View all ${post.comments.length} comments</button>
-        <p><strong>username</strong></p>
-    </section>
-
-    <section class="mycomment">
+    <section class="mycomment" tabindex="0">
         <i class="fa-regular fa-face-smile"></i>
         <p>add comment...</p>
-        <a>Post</a>
+        <button id="postbutton" class="open">Post</button>
     </section>
     </div>
 </div>
     `
 }
+const bookmarkStatus = post =>{ 
+    const bookmarked = `
+    <button class="fa-solid fa-bookmark" id="like" 
+    onclick = "deleteBm(${post.current_user_bookmark_id})">
+    </button>` 
 
-function checkIcons(data){
+    const unmarked =`
+    <button class="fa-regular fa-bookmark" id="like" 
+    onclick = "createBookmark(${post.id})">
+    </button>`
 
-    if (data.current_user_bookmark_id !="undefined"){
-    document.getElementById("bookmark").style.color="purple";
+    if(post.current_user_bookmark_id != undefined){
+        return bookmarked
+    }else{ 
+        return unmarked
     }
-    
-    if (data.curent_user_like_id !="undefined"){
-        document.getElementById("heart").style.color ="red";
+}
+
+const likeStatus = post =>{ 
+    const liked = `
+    <button class="fa-solid fa-heart" id="bookmark" 
+    onclick = "deleteLike(${post.current_user_like_id})">
+    </button>` 
+
+    const unliked =`
+    <button class="fa-regular fa-heart" id="bookmark"
+    onclick = "createLike(${post.id})">
+    </button>`
+
+    if(post.current_user_like_id != undefined){
+        return liked
+    }else{ 
+        return unliked
     }
-    }
+}
 
 const getSuggestions = async (token) =>{
     const endpoint = `${rootURL}/api/suggestions`;
@@ -150,7 +275,7 @@ const suggestionsToHtml = suggestion =>{
     <p>suggested for you</p>
     </section>
         
-    <a>follow</a>
+    <button id="followbutton">follow</button>
 </div>
 `
 }
@@ -166,4 +291,13 @@ const initPage = async () => {
     getSuggestions(token);
 
 }
+
+document.addEventListener('focus', function(event) {
+    console.log('focus');
+    if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
+        console.log('back to top!');
+        event.stopPropagation();
+        document.querySelector('.close').focus();
+    }
+}, true);
 initPage();

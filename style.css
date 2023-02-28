@@ -1,8 +1,9 @@
 body{
     font-family:"Albert Sans";
-    background-color:rgb(228, 222, 213);
+    background-color:lightgray;
     margin:0px;
 }
+
 main{ 
     margin:0px;
     display:flex;
@@ -10,6 +11,7 @@ main{
     padding-top:12vh;
 }
 nav{ 
+    position:absolute;
     top:0px;    
     background-color:white; 
     height: 12vh; 
@@ -39,21 +41,25 @@ nav h1{
 .feed{ 
     display:flex;
     flex-direction:column;
-    align-items:center;
+    align-items:end;
+    right:15%;
     margin-top:15px; 
-    width: 70vw;
+    width: 55vw;
 }
 
 /* STORIES */
 .feed .stories{
+    left:0px;
     display:flex;
     background-color:white;
-    width: 65%;
+    width: 550px;
     height:15%;
     margin-bottom:30px;
 
     justify-content:left;
     align-items:center;
+    overflow:hidden;
+
 }
 .story{ 
     display:flex; 
@@ -62,7 +68,7 @@ nav h1{
     align-items:center;
 
     height:60px;
-    width:60px;
+    width:50px;
     margin:10px;
     padding-top:5px;
     font-size: 7pt;
@@ -82,7 +88,7 @@ nav h1{
     justify-content: center;
     flex-direction:column;
 
-    width:65%;
+    width:550px;
 }
 
 #posts .post{ 
@@ -108,17 +114,13 @@ nav h1{
     margin-right:10px;
 }
 
-#posts i{ 
-    margin-right:5px;
+#posts .intbar button{ 
+    background:none;
+    border:none;
 }
 
-.intbar .liked{ 
-    -webkit-text-fill-color: red;
-    text-overflow: clip;
-}
-
-.intbar .marked{ 
-    -webkit-text-fill-color:purple;
+.intbar .fa-solid-fa-heart{ 
+    color:red;
 }
 
 #posts .post .intbar {
@@ -160,6 +162,11 @@ nav h1{
     color:rgb(35, 35, 216); 
 }
 
+.comment button:hover{ 
+    filter:saturate(110%);
+    text-decoration-line:underline;
+}
+
 .mycomment{ 
 background-color:white;
 
@@ -176,6 +183,17 @@ border-top:1px solid lightgray
 }
 .mycomment a{ 
     color:blue;
+}
+
+#postbutton{ 
+    background:none; 
+    border:none;
+    color:blue;
+}
+
+#postbutton:hover{ 
+    filter:saturate(110%);
+    text-decoration-line:underline;
 }
 
 
@@ -231,7 +249,17 @@ border-top:1px solid lightgray
 .suggestion a{
     font-size:smaller; 
     color:blue;
+}
 
+#followbutton{ 
+    background:none; 
+    border:none;
+    color:blue;
+}
+
+#followbutton:hover{ 
+    filter:saturate(110%);
+    text-decoration-line:underline;
 }
 
 .suggestion img{ 
@@ -242,4 +270,106 @@ border-top:1px solid lightgray
 .suggestions h2{ 
     font-size:12pt;
     color:gray;
+}
+
+/* MODAL BOX */
+.modal-bg {
+    background: rgba(50, 50, 50, 0.8);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content: center;
+}
+
+.modal-bg button{ 
+    position:absolute;
+    background:none; 
+    border:none; 
+    color:white; 
+    top:0px;
+    right:0px;
+    height:50px;
+    width:50px;
+}
+
+/* .modal-bg { 
+    
+} */
+
+/* Actual modal */
+.modal {
+    width: 70vw;
+    height: auto;
+    max-height: 60vh;
+    min-height: 40vh;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+
+    overflow:hidden;
+    position:absolute;
+}
+
+.modal-body{ 
+    flex-wrap:wrap;
+    display:flex;
+    flex-direction:row;
+    width:40%;
+    overflow-y:scroll;
+}
+
+.modal-header{
+    width:28%;
+    height:10%;
+    background-color:white;
+    display:flex; 
+    position:fixed;
+    flex-direction:row;
+    border-bottom:solid 1px gray;
+    align-items:center;
+}
+.modal-body .post-caption{
+    margin-top:15%;
+    display:flex; 
+    flex-direction:column;
+    width:100%;
+
+}
+
+.modal-body .comment p{ 
+    margin:8px;
+}
+
+.modal-body .display_time{ 
+    color:gray;
+}
+.modal img{
+    height:auto;
+    width:60%;
+}
+
+.modal-body img{
+    height:45px; 
+    width:45px;
+    border-radius:50%;
+    margin-right:20px;
+}
+
+
+
+
+.close {
+    align-self: flex-end;
+}
+
+/* class that hides the modal by default */
+.hidden {
+    display: none !important;
 }

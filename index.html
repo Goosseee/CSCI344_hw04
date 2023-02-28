@@ -8,8 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.4.2/lib/p5.js" defer></script>
-    <script src="js/main.js" type="module" defer></script>
-
+    <script src="js/main.js"  type="module"     defer></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
@@ -27,7 +26,19 @@
             <a>Sign out</a>
         </section>
 </nav>
+
+        <!-- MODAL BOX -->
+        <div class="modal-bg hidden" aria-hidden="true" role="dialog">
+            <button class="close" onclick="shutModal()" aria-label="Close the modal window"><i class="fa-solid fa-x"></i></button>
+            <section class="modal">
+               <img src =""/>
+                <div class="modal-body">
+                </div>
+            </section>
+        </div>
+
 <main>
+
 
 <div class = "feed">
     <div class ="stories">
@@ -89,6 +100,7 @@
 <div class ="suggestions">
     <h2>Suggestions for you</h2> 
 
+<!-- Commented out because insertAdjacentHTML is used for this section -->
 <!-- <div class="suggestion" >
 
     <img src="https://picsum.photos/30/30">
@@ -104,11 +116,10 @@
 </div>
 </div>
 
-<div id = modal>
-
 </div>
 
-<div class = "testing">
 </div>
 
 </main>
+</body>
+</html>

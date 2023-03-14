@@ -178,7 +178,9 @@ align-items:center;
 border-top:1px solid lightgray
 }
 
-.mycomment p{ 
+.mycomment input{
+    border:none;
+    height:35px; 
     width:80%
 }
 .mycomment a{ 

@@ -1,7 +1,15 @@
-import {getAccessToken} from './utilities.js';
 const rootURL = 'https://photo-app-secured.herokuapp.com';
 let posts;
 
+
+/*
+----------------------------------
+|| SECTION 1: STORY AND PROFILE ||
+----------------------------------
+
+- All code for fetching and displaying stories 
+- All code for fetching and displaying profile information
+*/
 const showStories = async (token) => {
     const endpoint = `${rootURL}/api/stories`;
     const response = await fetch(endpoint, {
@@ -55,6 +63,15 @@ function profileToHtml(user){
     document.query
 }
 
+/*
+----------------------
+|| SECTION 2: POSTS ||
+----------------------
+
+- All code for the posts, comments and modal sections
+- All code for likes, comments, bookmarks
+
+*/
 const showPosts = async (token) => {
     const endpoint = `${rootURL}/api/posts?limit=10`;
     const response = await fetch(endpoint, {
@@ -103,6 +120,7 @@ const openModal = post => {
 
     const modalHtml = commentsInModal(post);
     document.querySelector(".modal").innerHTML= modalHtml;
+    document.addEventListener("keydown", shutModal);
 
     
 }
@@ -141,9 +159,13 @@ const listOfComments = comments =>{
 `
 }
 
-window.shutModal = () =>{
+window.shutModal = (ev) =>{
+    if(ev.code ==27){
+        closeModal();
+    }
     closeModal();
 }
+
 const closeModal = () => {
     // hides the modal:
     modalElement.classList.add('hidden');
@@ -157,6 +179,7 @@ const closeModal = () => {
 
     document.querySelector(".reccomendations").style.display = "flex";
     document.querySelector("body").style.overflow ="scroll";
+    document.removeEventListener("keydown", shutModal);
 };
 
 const showCommentAndButton = (post, index) =>{
@@ -176,7 +199,6 @@ const showCommentAndButton = (post, index) =>{
 }
 
 const postsToHtml = (post, index) =>{
-
     return`  
     <div class="post" id="${post.id}">
         <section class="header" tabindex="0">
@@ -205,17 +227,44 @@ const postsToHtml = (post, index) =>{
 
     <section class="mycomment" tabindex="0">
         <i class="fa-regular fa-face-smile"></i>
-        <p>add comment...</p>
-        <button id="postbutton" class="open">Post</button>
+        <input type="text" id="yourcomment${index}" placeholder="Add a comment...">
+        <button id="postbutton" class="open" onclick="postComment(${post.id}, ${index})">Post</button>
     </section>
     </div>
 </div>
     `
+
 }
+
+const postComment = async (post_id, index) =>{
+
+    currentId= "yourcomment"+index;
+
+    const postData ={
+        "post_id":post_id,
+        "text": document.getElementById(currentId).value
+    };
+
+    fetch("https://photo-app-secured.herokuapp.com/api/comments", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(postData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
+
+    showPosts(token);
+}
+
 const bookmarkStatus = post =>{ 
     const bookmarked = `
     <button class="fa-solid fa-bookmark" id="like" 
-    onclick = "deleteBm(${post.current_user_bookmark_id})">
+    onclick = "deleteBookmark(${post.current_user_bookmark_id})">
     </button>` 
 
     const unmarked =`
@@ -248,6 +297,90 @@ const likeStatus = post =>{
     }
 }
 
+const createBookmark = async (post_id) => {
+    // define the endpoint:
+    const endpoint = `https://photo-app-secured.herokuapp.com/api/bookmarks/`;
+    const postData = {
+        "post_id": post_id // replace with the actual post ID
+    };
+
+    // Create the bookmark:
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(postData)
+    })
+    const data = await response.json();
+    console.log(data);
+    showPosts(token);
+}
+
+const deleteBookmark = async (bookmark_id) => {
+    // define the endpoint:
+    const endpoint = `https://photo-app-secured.herokuapp.com/api/bookmarks/${bookmark_id}`;
+
+    // Create the bookmark:
+    const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    const data = await response.json();
+    console.log(data);
+    showPosts(token);
+}
+
+const createLike = async (post_id) => {
+    // define the endpoint:
+    const endpoint = `https://photo-app-secured.herokuapp.com/api/posts/likes`;
+    const postData = {
+        "post_id": post_id // replace with the actual post ID
+    };
+
+    // Create the bookmark:
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(postData)
+    })
+    const data = await response.json();
+    console.log(data);
+    showPosts(token);
+}
+
+const deleteLike = async (like_id) => {
+    // define the endpoint:
+    const endpoint = `https://photo-app-secured.herokuapp.com/api/posts/likes/${like_id}`;
+
+    // Create the bookmark:
+    const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    const data = await response.json();
+    console.log(data);
+    showPosts(token);
+}
+/*
+----------------------------
+|| SECTION 3: SUGGESTIONS ||
+----------------------------
+
+- All code for fetching and displaying suggestions
+- Code to follow was working but the sites broke, so couldn't do code to unfollow 
+
+*/
 const getSuggestions = async (token) =>{
     const endpoint = `${rootURL}/api/suggestions`;
     const response = await fetch(endpoint, {
@@ -275,14 +408,45 @@ const suggestionsToHtml = suggestion =>{
     <p>suggested for you</p>
     </section>
         
-    <button id="followbutton">follow</button>
+    <button id="followbutton" onclick="follow(${suggestion.id})">follow</button>
 </div>
 `
 }
 
+
+const follow = async (userID) =>{
+    const postData = {
+        "user_id": userID
+    };
+    fetch("https://photo-app-secured.herokuapp.com/api/following/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3ODc0MDQ2NiwianRpIjoiNzY2ZjZmMDYtMTAxNC00ZTZiLTgwMWYtZjk3ZDc0OWU4OTdhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNjc4NzQwNDY2LCJjc3JmIjoiNjI2YjMxYTAtMjkwOC00MGU3LWJkODUtNjRjOWJkYmUyNmZhIiwiZXhwIjoxNjc4NzQxMzY2fQ.W0AlnanrzEdRYeZpCYjgR5UWMOD2DNjEUhZTBf-j1iw'
+        },
+        body: JSON.stringify(postData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
+}
+
+const unfollow = async () =>{ 
+    
+}
+
+/*
+---------------------------------
+|| SECTION 4: HELPER FUNCTIONS ||
+---------------------------------
+
+- Code to initialize the page, set a value for the token and accessibility
+*/
+
 const initPage = async () => {
     // first log in (we will build on this after Spring Break):
-    const token = await getAccessToken(rootURL, 'webdev', 'password');
+    token = await getAccessToken(rootURL, 'webdev', 'password');
 
     // then use the access token provided to access data on the user's behalf
     getProfile(token);
@@ -292,12 +456,31 @@ const initPage = async () => {
 
 }
 
-document.addEventListener('focus', function(event) {
-    console.log('focus');
-    if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
-        console.log('back to top!');
-        event.stopPropagation();
-        document.querySelector('.close').focus();
-    }
-}, true);
+    document.addEventListener('focus', function(event) {
+        console.log('focus');
+        if (modalElement.getAttribute('aria-hidden') === 'false' && !modalElement.contains(event.target)) {
+            console.log('back to top!');
+            event.stopPropagation();
+            document.querySelector('.close').focus();
+        }
+    }, true);
+
+
+const getAccessToken = async (rootURL, username, password) => {
+    const postData = {
+        "username": username,
+        "password": password
+    };
+    const endpoint = `${rootURL}/api/token/`;
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData)
+    });
+    const data = await response.json();
+    return data.access_token;
+}
+
 initPage();
